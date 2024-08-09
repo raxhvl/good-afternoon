@@ -7,8 +7,15 @@ export default function Home() {
         <div className="h-full bg-primary rounded-3.5xl s:rounded-4xl flex flex-row p-6">
           <div className="basis-2/5">
             <img src="/logo-flip.png " className="w-[200px] h-[200px]" />
-            <h2>Experience Coldplay Live: MUSIC of the SPHERES tour</h2>
-            <p>
+            <h2 className="font-display text-5xl m-3">
+              Experience Coldplay Live
+            </h2>
+            <h3 className="text-3xl font-display">
+              <span className="underline">
+                <span> MUSIC of the SPHERES tour</span>
+              </span>
+            </h3>
+            <p className="text-lg">
               Join Coldplay on their highly anticipated MUSIC of the SPHERES
               tour! Experience a stunning performance in the magical city of
               Lumina Falls, renowned for its shimmering skies and cascading

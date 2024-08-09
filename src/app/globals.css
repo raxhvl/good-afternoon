@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +7,16 @@
 :root {
   --color-primary: #ffc400;
   --color-secondary: #d2a100;
+}
+
+body {
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+p {
+  margin: 20px 0;
 }
 
 .bg-primary {
@@ -30,4 +42,35 @@
 .animate-spin-slow {
   -webkit-animation: spin 20s linear infinite;
   animation: spin 20s linear infinite;
+}
+
+.font-display {
+  font-family: "Dela Gothic One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.underline {
+  display: inline-block;
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+  position: relative;
+  z-index: 10 !important;
+}
+.underline:before {
+  --tw-translate-x: -50%;
+  --tw-rotate: -0.5deg;
+  background-color: #fff;
+  border-radius: 9999px;
+  content: "";
+  height: 1rem;
+  left: 50%;
+  position: absolute;
+  top: 60%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform-origin: right;
+  width: 105%;
+  z-index: -1;
 }
