@@ -1,5 +1,8 @@
+"use client";
+
 import Button from "@/components/Button";
 import Logo from "@/components/logo";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const tickets = [
   {
@@ -29,7 +32,7 @@ function Card({ ticket }: any) {
       <h4 className="font-display text-xl m-0">${ticket.price}</h4>
       <p className="my-2">{ticket.description}</p>
       <div>
-        <Button href="/ticket">
+        <Button onClick={() => signIn("worldcoin")}>
           <img src="/worldcoin.svg" className="inline-block mr-2" />
           Continue with Worldcoin
         </Button>
@@ -39,6 +42,10 @@ function Card({ ticket }: any) {
 }
 
 function page() {
+  const { data: session } = useSession();
+
+  console.log(session);
+
   return (
     <div className="flex">
       <div className="basis-3/5">
@@ -50,7 +57,7 @@ function page() {
       <div className="p-2 basis-2/5">
         <h3 className="text-3xl font-display mb-5">
           <span className="underline">
-            <span>Tickets</span>
+            {!session ? <span>Tickets</span> : <span>Welcome!</span>}
           </span>
         </h3>
         {tickets.map((ticket, i) => (

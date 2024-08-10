@@ -1,5 +1,9 @@
+"use client";
+
 import Button from "@/components/Button";
 import Logo from "@/components/logo";
+
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function page() {
   return (
