@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import Logo from "@/components/logo";
-import SignIn from "@/components/signIn";
 
 export default function Home() {
   return (
