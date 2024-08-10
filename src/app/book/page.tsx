@@ -29,7 +29,7 @@ function Card({ ticket }: any) {
       <h4 className="font-display text-xl m-0">${ticket.price}</h4>
       <p className="my-2">{ticket.description}</p>
       <div>
-        <Button>
+        <Button href="/ticket">
           <img src="/worldcoin.svg" className="inline-block mr-2" />
           Continue with Worldcoin
         </Button>

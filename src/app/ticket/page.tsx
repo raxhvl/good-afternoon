@@ -1,14 +1,18 @@
 import Button from "@/components/Button";
 import Logo from "@/components/logo";
 
-export default function Home() {
+export default function page() {
   return (
     <>
+      <figure className="basis-3/5 flex flex-col relative">
+        <img
+          src="/ticket.jpg"
+          className="w-full object-contain min-h-0 h-full rounded-3xl"
+        />
+      </figure>
       <div className="basis-2/5">
         <Logo />
-        <h2 className="font-display text-5xl m-3 mt-10">
-          Experience Coldplay Live
-        </h2>
+        <h2 className="font-display text-5xl m-3 mt-10">Ticket confirmed!</h2>
         <h3 className="text-3xl font-display">
           <span className="underline">
             <span> MUSIC of the SPHERES tour</span>
@@ -26,23 +30,11 @@ export default function Home() {
           let Coldplay's music guide you through an extraordinary evening under
           the stars.
         </p>
-        <Button href="/book">
-          Book Tickets
+        <Button href="/">
+          View on blockchain
           <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
         </Button>
       </div>
-      <figure className="basis-3/5 flex flex-col relative">
-        <div className="absolute flex justify-center w-[75%] h-[75%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <img
-            src="/overlay.png"
-            className="object-contain animate-spin-slow"
-          />
-        </div>
-        <img
-          src="/coldplay.png"
-          className="w-full object-contain min-h-0 h-full"
-        />
-      </figure>
     </>
   );
 }
