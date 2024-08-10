@@ -6,7 +6,9 @@ export default function Home() {
     <>
       <div className="basis-2/5">
         <Logo />
-        <h2 className="font-display text-5xl m-3">Experience Coldplay Live</h2>
+        <h2 className="font-display text-5xl m-3 mt-10">
+          Experience Coldplay Live
+        </h2>
         <h3 className="text-3xl font-display">
           <span className="underline">
             <span> MUSIC of the SPHERES tour</span>
