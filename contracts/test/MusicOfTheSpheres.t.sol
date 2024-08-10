@@ -12,7 +12,22 @@ contract MusicOfTheSpheresTest is Test {
         nft = new MusicOfTheSpheres();
     }
 
-    function testMint() public {
+    function testAliceCanMintOneOfEach() public {
+        nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.VIP_LOUNGE);
+        nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.PLATINUM_PREMIER_SEATING);
+        nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.STANDARD_ACCESS);
+    }
+
+    function testAliceCANNOTMintMoreThanOneOfEach() public {
+        nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.VIP_LOUNGE);
+        vm.expectRevert();
         nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.VIP_LOUNGE);
     }
+
+    function testTokenURI() public {
+        nft.mintTicket(alice,MusicOfTheSpheres.TicketTier.VIP_LOUNGE);
+        nft.tokenURI(0);
+    }
+
+
 }
