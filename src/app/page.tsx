@@ -19,7 +19,7 @@ export default function Home() {
         </h3>
         <p className="text-lg">
           Join Coldplay on their highly anticipated MUSIC of the SPHERES tour!
-          Experience a stunning performance in the magical city of Lumina Falls,
+          Experience a stunning performance in the magical city of Berlin,
           renowned for its shimmering skies and cascading starlight. With a
           blend of heart-stirring anthems and mesmerizing visuals, this night
           promises to be an unforgettable journey. Secure your tickets now and
