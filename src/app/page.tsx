@@ -23,8 +23,8 @@ export default function Home() {
           let Coldplay's music guide you through an extraordinary evening under
           the stars.
         </p>
-        <Button href="/tickets">
-          Buy Tickets
+        <Button href="/book">
+          Book Tickets
           <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
         </Button>
       </div>
