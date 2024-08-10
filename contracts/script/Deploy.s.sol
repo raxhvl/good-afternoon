@@ -2,11 +2,17 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
+import {MusicOfTheSpheres} from "../src/MusicOfTheSpheres.sol";
 
 contract Deploy is Script {
     function setUp() public {}
 
     function run() public {
-        vm.broadcast();
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+
+        new MusicOfTheSpheres();
+
+        vm.stopBroadcast();
     }
 }
