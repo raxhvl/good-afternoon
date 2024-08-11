@@ -92,7 +92,13 @@ function Card({ ticket }: any) {
         {!minted ? (
           <Button onClick={() => mint()} disabled={loading}>
             {loading ? (
-              <span>Purchasing...</span>
+              <span>
+                Purchasing Ticket...
+                <img
+                  src="/spinner.png"
+                  className="inline-block mr-2 ml-4 w-8 animate-spin"
+                />
+              </span>
             ) : (
               <>
                 Buy Ticket
