@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  Hex,
-  WriteContractErrorType,
-  createWalletClient,
-  http,
-  publicActions,
-} from "viem";
+import { Hex, WriteContractErrorType, encodeFunctionData } from "viem";
 
 import Contract from "@/lib/abi.json";
 
 import { getServerSession } from "next-auth/next";
-import { privateKeyToAccount } from "viem/accounts";
-import { sessionToAccount } from "@/lib/wallet";
+import { sessionToAccount, sessionToPK } from "@/lib/wallet";
 import { chainInfo } from "@/lib/config";
+import { createModularAccountAlchemyClient } from "@alchemy/aa-alchemy";
+import { LocalAccountSigner, baseSepolia } from "@alchemy/aa-core";
 
 export async function POST(request: NextRequest) {
   //   !!! Dangerous: THIS IS A HUGE SECURITY FLAW !!!
@@ -30,30 +25,36 @@ export async function POST(request: NextRequest) {
   const userWallet = sessionToAccount(session);
   console.log(userWallet.address);
 
-  const paymaster = privateKeyToAccount(process.env.PAYMSTER_KEY as Hex);
+  const signer = LocalAccountSigner.privateKeyToAccountSigner(
+    sessionToPK(session)
+  );
 
-  const client = createWalletClient({
-    account: paymaster,
-    chain: chainInfo.anvil.chain,
-    transport: http(process.env.ALCHEMY_RPC_URL),
-  }).extend(publicActions);
+  const client = await createModularAccountAlchemyClient({
+    apiKey: process.env.ALCHEMY_API_KEY!,
+    chain: baseSepolia,
+    signer,
+    gasManagerConfig: {
+      policyId: process.env.ALCHEMY_POLICY_ID!,
+    },
+  });
 
   try {
-    const txHash = await client.writeContract({
-      address: chainInfo.anvil.contract as Hex,
-      abi: Contract.abi,
-      functionName: "mintTicket",
-      args: [userWallet.address, id],
+    const result = await client.sendUserOperation({
+      uo: {
+        target: chainInfo.baseSepolia.contract as Hex,
+        data: encodeFunctionData({
+          abi: Contract.abi,
+          functionName: "mintTicket",
+          args: [userWallet.address, id],
+        }),
+      },
     });
-
-    console.log(txHash);
+    const txHash = await client.waitForUserOperationTransaction(result);
     return NextResponse.json({ message: "Ticket minted!", txHash });
   } catch (e) {
-    const error = e as WriteContractErrorType;
-
     return NextResponse.json(
       // @ts-ignore
-      { message: error.cause.shortMessage },
+      { message: "Purchase failed" },
       { status: 500 }
     );
   }

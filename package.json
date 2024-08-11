@@ -10,6 +10,8 @@
     "abi": "cd contracts && forge build && cd .. && cp contracts/out/MusicOfTheSpheres.sol/MusicOfTheSpheres.json src/lib/abi.json "
   },
   "dependencies": {
+    "@alchemy/aa-alchemy": "^3.19.0",
+    "@alchemy/aa-core": "^3.19.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18",

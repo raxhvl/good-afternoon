@@ -35,6 +35,7 @@ function Card({ ticket }: any) {
   const { data: session } = useSession();
   const router = useRouter();
   const [minted, setMinted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const checkIfMinted = async () => {
     const response = await fetch("/api/token/validate", {
@@ -54,6 +55,8 @@ function Card({ ticket }: any) {
   }, []);
 
   const mint = async () => {
+    if (loading) return; // Prevent further requests while loading
+    setLoading(true);
     try {
       const response = await fetch("/api/token/mint", {
         method: "POST",
@@ -75,6 +78,8 @@ function Card({ ticket }: any) {
     } catch (e) {
       // @ts-ignore
       alert(e.message);
+    } finally {
+      setLoading(false); // Reset loading state regardless of success or failure
     }
   };
 
@@ -85,15 +90,21 @@ function Card({ ticket }: any) {
       <p className="my-2">{ticket.description}</p>
       <div>
         {!minted ? (
-          <Button onClick={() => mint()}>
-            Buy Ticket
-            <img
-              src="/right-arrow.png"
-              className="inline-block mr-2 ml-4 w-8"
-            />
+          <Button onClick={() => mint()} disabled={loading}>
+            {loading ? (
+              <span>Purchasing...</span>
+            ) : (
+              <>
+                Buy Ticket
+                <img
+                  src="/right-arrow.png"
+                  className="inline-block mr-2 ml-4 w-8"
+                />
+              </>
+            )}
           </Button>
         ) : (
-          <div className="text-2xl font-display">✅ Ticket purchased !</div>
+          <div className="text-2xl font-display">✅ Ticket purchased!</div>
         )}
       </div>
     </div>

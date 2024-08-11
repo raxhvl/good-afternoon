@@ -11,7 +11,7 @@ import Contract from "@/lib/abi.json";
 
 import { getServerSession } from "next-auth/next";
 import { privateKeyToAccount } from "viem/accounts";
-import { anvil } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 import { sessionToAccount } from "@/lib/wallet";
 import { chainInfo } from "@/lib/config";
 
@@ -32,13 +32,13 @@ export async function POST(request: NextRequest) {
   console.log(userWallet.address);
 
   const client = createClient({
-    chain: anvil,
-    transport: http(process.env.BLOCKSCOUT_RPC_URL),
+    chain: baseSepolia,
+    transport: http(process.env.THIRD_WEB_RPC_URL),
   }).extend(publicActions);
 
   try {
     const response = await client.readContract({
-      address: chainInfo.anvil.contract as Hex,
+      address: chainInfo.baseSepolia.contract as Hex,
       abi: Contract.abi,
       functionName: "getTierMintCount",
       args: [userWallet.address, id],

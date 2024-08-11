@@ -34,7 +34,7 @@ contract MusicOfTheSpheres is ERC721, Ownable {
      * @param to Address to receive the ticket
      * @param tier Ticket tier
      */
-    function mintTicket(address to, TicketTier tier) external onlyOwner {
+    function mintTicket(address to, TicketTier tier) external {
         // MINT 1 Ticket per user
         require(ticketTierMintCount[to][tier] < 1, "Ticket of this tier already owned");
         
