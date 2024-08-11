@@ -22,7 +22,7 @@ contract MusicOfTheSpheres is ERC721, Ownable {
     mapping(uint256 => Ticket) public tickets;
 
     // Mapping from tier to owner
-    mapping(TicketTier => address) public tierOwners;
+    mapping(address => mapping (TicketTier => uint256)) public ticketTierMintCount;
 
     // Event emitted when a new ticket is minted
     event TicketMinted(uint256 ticketId, TicketTier tier, uint256 eventDate);
@@ -35,7 +35,8 @@ contract MusicOfTheSpheres is ERC721, Ownable {
      * @param tier Ticket tier
      */
     function mintTicket(address to, TicketTier tier) external onlyOwner {
-        require(tierOwners[tier] == address(0), "Ticket of this tier already owned");
+        // MINT 1 Ticket per user
+        require(ticketTierMintCount[to][tier] < 1, "Ticket of this tier already owned");
         
         uint256 ticketId = _ticketIdCounter.current();
         _ticketIdCounter.increment();
@@ -47,8 +48,8 @@ contract MusicOfTheSpheres is ERC721, Ownable {
             eventDate: 1723917600
         });
 
-        // Set the owner of the ticket tier
-        tierOwners[tier] = to;
+        // Increment mint
+        ticketTierMintCount[to][tier]++;
 
         emit TicketMinted(ticketId, tier, 1723917600);
     }
@@ -74,11 +75,12 @@ contract MusicOfTheSpheres is ERC721, Ownable {
     }
 
     /**
-     * @dev Get the owner of a specific tier.
+     * @dev Get tickets minted in a Tier.
+     * @param owner The owner of the ticket
      * @param tier The ticket tier
      * @return The address of the owner
      */
-    function getTierOwner(TicketTier tier) external view returns (address) {
-        return tierOwners[tier];
+    function getTierMintCount(address owner, TicketTier tier) external view returns (uint256) {
+        return ticketTierMintCount[owner][tier];
     }
 }
