@@ -27,8 +27,8 @@ export default function Home() {
           the stars.
         </p>
         <Button href="/book">
-          Book Tickets
-          <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
+          <img src="/worldcoin.svg" className="inline-block mr-2" />
+          Continue with Worldcoin
         </Button>
       </div>
       <figure className="basis-3/5 flex flex-col relative">

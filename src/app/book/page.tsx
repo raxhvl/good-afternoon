@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import Loading from "@/components/Loading";
 import Logo from "@/components/logo";
 import { useSession, signIn, signOut } from "next-auth/react";
 
@@ -26,15 +27,21 @@ const tickets = [
 ];
 
 function Card({ ticket }: any) {
+  const { data: session } = useSession();
+
+  const mint = () => {
+    console.log(session);
+  };
+
   return (
-    <div className="border-4 flex flex-col border-black rounded-xl p-2 mb-4">
-      <h3 className="font-display text-3xl">{ticket.title}</h3>
+    <div className="border-4 flex flex-col border-black rounded-xl p-2 mb-2">
+      <h3 className="font-display text-2xl">{ticket.title}</h3>
       <h4 className="font-display text-xl m-0">${ticket.price}</h4>
       <p className="my-2">{ticket.description}</p>
       <div>
-        <Button onClick={() => signIn("worldcoin")}>
-          <img src="/worldcoin.svg" className="inline-block mr-2" />
-          Continue with Worldcoin
+        <Button onClick={() => mint()}>
+          Buy Ticket
+          <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
         </Button>
       </div>
     </div>
@@ -42,9 +49,15 @@ function Card({ ticket }: any) {
 }
 
 function page() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  console.log(session);
+  if (status == "loading") {
+    return <Loading />;
+  }
+
+  if (status == "unauthenticated") {
+    return signIn("worldcoin");
+  }
 
   return (
     <div className="flex">
@@ -55,7 +68,7 @@ function page() {
         </div>
       </div>
       <div className="p-2 basis-2/5">
-        <h3 className="text-3xl font-display mb-5">
+        <h3 className="text-3xl font-display mb-3">
           <span className="underline">
             {!session ? <span>Tickets</span> : <span>Welcome!</span>}
           </span>
