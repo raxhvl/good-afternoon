@@ -5,13 +5,16 @@ import Logo from "@/components/logo";
 
 import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function page() {
+export default function page({ params }: any) {
   return (
     <>
       <figure className="basis-3/5 flex flex-col relative">
         <img src="/ticket.jpg" className="object-contain min-h-0  rounded-md" />
         <div className="self-center mt-8">
-          <Button href="/">
+          <Button
+            href={`https://base-sepolia.blockscout.com/tx/${params.txHash}`}
+            newWindow
+          >
             View on blockchain
             <img
               src="/right-arrow.png"
@@ -36,7 +39,7 @@ export default function page() {
           renowned for its shimmering skies and cascading starlight.
         </p>
         <img src="/map.png" className="rounded-md mb-4" />
-        <Button href="/">
+        <Button href="https://g.co/kgs/Fus1rsz" newWindow>
           View on maps
           <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
         </Button>

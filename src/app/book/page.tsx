@@ -4,22 +4,26 @@ import Button from "@/components/Button";
 import Loading from "@/components/Loading";
 import Logo from "@/components/logo";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const tickets = [
   {
     title: "VIP Lounge",
+    id: 0,
     description:
       "Front-row seats, VIP lounge access, meet-and-greet with the artist, a tour program, limited-edition poster, and a premium gift bag. Complimentary food and drinks included.",
     price: 500,
   },
   {
     title: "Platinum Premier Seating",
+    id: 1,
     description:
       "Premium seats in the first ten rows, access to a pre-show lounge with appetizers and drinks, a collectible poster, and an event lanyard.",
     price: 250,
   },
   {
     title: "Standard Access",
+    id: 2,
     description:
       "General admission seating with a good view of the stage. Enjoy the concert at an affordable price.",
     price: 75,
@@ -28,13 +32,31 @@ const tickets = [
 
 function Card({ ticket }: any) {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const mint = async () => {
-    const response = await fetch("/api/token/mint", {
-      method: "POST",
-      body: JSON.stringify({ session }),
-    });
-    console.log(await response.json());
+    try {
+      const response = await fetch("/api/token/mint", {
+        method: "POST",
+        body: JSON.stringify({ session, id: ticket.id }),
+      });
+
+      // Check if response is ok (status code 200-299)
+      if (!response.ok) {
+        // Extract and parse error message from the response
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Purchase Failed");
+      }
+
+      const data = await response.json();
+
+      if (data.txHash) {
+        router.push(`/ticket/${data.txHash}`);
+      }
+    } catch (e) {
+      // @ts-ignore
+      alert(e.message);
+    }
   };
 
   return (
