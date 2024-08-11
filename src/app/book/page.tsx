@@ -49,7 +49,7 @@ function Card({ ticket }: any) {
 }
 
 function page() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   if (status == "loading") {
     return <Loading />;
@@ -69,9 +69,7 @@ function page() {
       </div>
       <div className="p-2 basis-2/5">
         <h3 className="text-3xl font-display mb-3">
-          <span className="underline">
-            {!session ? <span>Tickets</span> : <span>Welcome!</span>}
-          </span>
+          <span className="underline">Welcome</span>
         </h3>
         {tickets.map((ticket, i) => (
           <Card ticket={ticket} key={i} />
