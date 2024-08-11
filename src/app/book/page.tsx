@@ -29,8 +29,12 @@ const tickets = [
 function Card({ ticket }: any) {
   const { data: session } = useSession();
 
-  const mint = () => {
-    console.log(session);
+  const mint = async () => {
+    const response = await fetch("/api/token/mint", {
+      method: "POST",
+      body: JSON.stringify({ session }),
+    });
+    console.log(await response.json());
   };
 
   return (
