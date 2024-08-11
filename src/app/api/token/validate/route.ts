@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   Hex,
   WriteContractErrorType,
-  createWalletClient,
+  createClient,
   http,
   publicActions,
 } from "viem";
@@ -11,6 +11,7 @@ import Contract from "@/lib/abi.json";
 
 import { getServerSession } from "next-auth/next";
 import { privateKeyToAccount } from "viem/accounts";
+import { anvil } from "viem/chains";
 import { sessionToAccount } from "@/lib/wallet";
 import { chainInfo } from "@/lib/config";
 
@@ -30,24 +31,21 @@ export async function POST(request: NextRequest) {
   const userWallet = sessionToAccount(session);
   console.log(userWallet.address);
 
-  const paymaster = privateKeyToAccount(process.env.PAYMSTER_KEY as Hex);
-
-  const client = createWalletClient({
-    account: paymaster,
-    chain: chainInfo.anvil.chain,
-    transport: http(process.env.ALCHEMY_RPC_URL),
+  const client = createClient({
+    chain: anvil,
+    transport: http(process.env.BLOCKSCOUT_RPC_URL),
   }).extend(publicActions);
 
   try {
-    const txHash = await client.writeContract({
+    const response = await client.readContract({
       address: chainInfo.anvil.contract as Hex,
       abi: Contract.abi,
-      functionName: "mintTicket",
+      functionName: "getTierMintCount",
       args: [userWallet.address, id],
     });
 
-    console.log(txHash);
-    return NextResponse.json({ message: "Ticket minted!", txHash });
+    // @ts-ignore
+    return NextResponse.json({ isMinted: response >= 1n });
   } catch (e) {
     const error = e as WriteContractErrorType;
 

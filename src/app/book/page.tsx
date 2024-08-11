@@ -5,6 +5,7 @@ import Loading from "@/components/Loading";
 import Logo from "@/components/logo";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const tickets = [
   {
@@ -33,6 +34,24 @@ const tickets = [
 function Card({ ticket }: any) {
   const { data: session } = useSession();
   const router = useRouter();
+  const [minted, setMinted] = useState(false);
+
+  const checkIfMinted = async () => {
+    const response = await fetch("/api/token/validate", {
+      method: "POST",
+      body: JSON.stringify({ session, id: ticket.id }),
+    });
+
+    if (response.ok) {
+      const { isMinted } = await response.json();
+      console.log(isMinted);
+      setMinted(isMinted);
+    }
+  };
+
+  useEffect(() => {
+    checkIfMinted();
+  }, []);
 
   const mint = async () => {
     try {
@@ -65,10 +84,17 @@ function Card({ ticket }: any) {
       <h4 className="font-display text-xl m-0">${ticket.price}</h4>
       <p className="my-2">{ticket.description}</p>
       <div>
-        <Button onClick={() => mint()}>
-          Buy Ticket
-          <img src="/right-arrow.png" className="inline-block mr-2 ml-4 w-8" />
-        </Button>
+        {!minted ? (
+          <Button onClick={() => mint()}>
+            Buy Ticket
+            <img
+              src="/right-arrow.png"
+              className="inline-block mr-2 ml-4 w-8"
+            />
+          </Button>
+        ) : (
+          <div className="text-2xl font-display">✅ Ticket purchased !</div>
+        )}
       </div>
     </div>
   );
